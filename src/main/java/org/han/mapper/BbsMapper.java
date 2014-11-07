@@ -30,5 +30,4 @@ public interface BbsMapper {
 			+" (select /*+index_desc(tbl_bbs pk_bbs)*/ rownum rn, bno, title, userid, regdate, vcount, rcount from tbl_bbs where bno>0 and rownum<=(ceil(#{page}/10)*100)+1)"
 			+" where rn > (#{page}-1)*10 and rn<=(#{page}*10)")
 	public List<BbsVO> list(String page);
-	
 }

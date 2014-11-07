@@ -1,5 +1,8 @@
 package org.han.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,9 +14,6 @@ public class Paging {
 	private int perPage;	// 페이지당 글 갯수
 	private int first;		// page에 첫번째 게시글 
 	private int last;		// page에 마지막 게시글
-	
-	private int RnFirst;
-	private int RnLast;
 	
 	private boolean hasNext = false;
 	private boolean hasBefore = false;
@@ -48,8 +48,8 @@ public class Paging {
 		this.cnt = cnt;
 		this.lineCount = lineCount;
 		this.perPage = perPage;
-		this.first = 1;
-		this.last = 10;
+		this.first = ((page-1)*perPage)+1;
+		this.last = (first + perPage)-1;
 	}
 	
 
@@ -107,14 +107,23 @@ public class Paging {
 	 	
 	}
 	
-	public int getRnFirst(){
-		
+	public int getRnFirst(){		
 		return getRnLast() - perPage ;
 	}
 	
-	public int getRnLast(){
-		
+	
+	public int getRnLast(){		
 		return (page * perPage);
+	}
+	
+	public List getlineList(String page){		
+		List<Integer> lineList = new ArrayList<Integer>();
+		int pageNum = getNumber(page);
+		
+		for (int i = 1; i < 11 ; i++) {
+			lineList.add((int)((Math.floor(pageNum/(double)lineCount)) * lineCount) + i);
+		}
+		return lineList;		
 	}
 	
 
@@ -125,8 +134,7 @@ public class Paging {
 	}
 	
 	public static void main(String[] args) {
-
-		Paging maker = new Paging(12);
+		Paging maker = new Paging(41);
 		System.out.println(maker.getRowNum());
 	}
 	
