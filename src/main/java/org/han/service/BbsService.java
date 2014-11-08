@@ -33,5 +33,14 @@ public class BbsService {
 	public List<BbsVO> list(String page) {
 		return mapper.list(page);
 	}
+	
+	public int allCount(){
+		int cnt = Integer.parseInt(mapper.allCount());
+		Paging page = new Paging();
+		
+		int perpage = page.getPerPage();
+		int result = (int)(Math.ceil(cnt/(double)perpage) + 1);
+		return result;
+	}
 
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Paging {
-
+	
 	private int page;		// 보여주려고 하는 page의 숫자
 	private int cnt;		// 현재 페이지 구성하는데 필요한 데이터 수
 	private int lineCount;	// 화면 당 페이지 개수?
@@ -15,8 +15,8 @@ public class Paging {
 	private int first;		// page에 첫번째 게시글 
 	private int last;		// page에 마지막 게시글
 	
-	private boolean hasNext = false;
-	private boolean hasBefore = false;
+//	private boolean hasNext = false;
+//	private boolean hasBefore = false;
 	
 	public static int getNumber(String str){
 		try{
@@ -48,29 +48,28 @@ public class Paging {
 		this.cnt = cnt;
 		this.lineCount = lineCount;
 		this.perPage = perPage;
-		this.first = ((page-1)*perPage)+1;
-		this.last = (first + perPage)-1;
+//		this.first = 1;
+//		this.last = 10;
 	}
-	
 
-	public int getFirst() {
-		return first;
+
+
+	public int getFirst(String str) {
+		int num = getNumber(str);
+		return (int)((Math.floor(num/(double)lineCount) * lineCount))-9;
 	}
 
 	public void setFirst(int first) {
 		this.first = first;
 	}
-
-	public int getLast() {
-		return last;
+	
+	public int getLast(String str){
+		int num = getNumber(str)-1;
+		return (int)((Math.floor(num/(double)lineCount) * lineCount) + 10);
 	}
 
-	public void setLast(int last) {
-		this.last = last;
-	}
-
-	public int getPage() {
-		return page;
+	public int getPage(String str) {
+		return page = Integer.parseInt(str);
 	}
 
 	public void setPage(int page) {
@@ -107,35 +106,37 @@ public class Paging {
 	 	
 	}
 	
-	public int getRnFirst(){		
-		return getRnLast() - perPage ;
-	}
-	
-	
-	public int getRnLast(){		
-		return (page * perPage);
-	}
+//	public int getRnFirst(){		
+//		return getRnLast() - perPage ;
+//	}
+//	
+//	
+//	public int getRnLast(){		
+//		return (page * perPage);
+//	}
 	
 	public List getlineList(String page){		
 		List<Integer> lineList = new ArrayList<Integer>();
-		int pageNum = getNumber(page);
+		int pageNum = getNumber(page)-1;
 		
 		for (int i = 1; i < 11 ; i++) {
 			lineList.add((int)((Math.floor(pageNum/(double)lineCount)) * lineCount) + i);
 		}
 		return lineList;		
 	}
-	
+
 
 	@Override
 	public String toString() {
-		return "Criteria [page=" + page + ", cnt=" + cnt + ", lineCount="
-				+ lineCount + ", perPage=" + perPage + "]";
+		return "Paging [page=" + page + ", cnt=" + cnt + ", lineCount="
+				+ lineCount + ", perPage=" + perPage + ", first=" + first
+				+ ", last=" + last + "]";
 	}
-	
+
 	public static void main(String[] args) {
-		Paging maker = new Paging(41);
-		System.out.println(maker.getRowNum());
+		Paging maker = new Paging();
+////		System.out.println(maker.getRowNum());
+//		System.out.println(maker.getFirst("147"));
 	}
 	
 	

@@ -18,22 +18,38 @@
 	<%-- 	<c:forEach begin="${paging.first }" end="${paging.last }" var="idx">
 		<a href="javascript:_goPage(${idx})">[${idx}]</a>
 	</c:forEach> --%>
-	&nbsp;
-	<c:forEach items="${pageList}" var="index">
-		<a href="javascript:_goPage(${index})">[${index}]</a>
-	</c:forEach>
-		<a href="javascript:_goNextLine(${paging.last}+1)">|| Next</a>
-	<%-- ${pageList} --%>
 	
-	${paging.last}
+	
+	<!-- Before Page Button  -->
+ 	<c:choose>
+		<c:when test = "${pagePrev == 0}">
+		...</c:when>
+		<c:when test = "${pagePrev > 0 }">
+			<a href="javascript:_goPage(${pagePrev})"> [Prev] </a>
+		</c:when>
+	</c:choose>
+	
+	<!-- Page List -->
+	&nbsp; &nbsp;<c:forEach items="${pageList}" var="index">
+		<c:if test="${index < cnt}">
+			<a href="javascript:_goPage(${index})">[${index}]</a>
+		</c:if>
+	</c:forEach>
+	
+	<!-- Next Page Button -->
+	<a href="javascript:_goNextLine(${pageNext}+1)"> [Next] </a>
+	
+	<!-- write context -->
+	<button type="button"><a href="cboard"> write </a></button>
+	
+	<br>
+	<br>
+	<br>
+	${paging}
 	
 	<form method='get' name='pageForm'>
 		<input type='hidden' name='page'>
 		<script>
-   
-/*       var next = ${paging.perPage}*${paging.last}+1;
-      var fire = ${paging.getRowNum()}; */      
- 
       function _goPage(num){
          document.pageForm.page.value = num;
          document.pageForm.submit();
