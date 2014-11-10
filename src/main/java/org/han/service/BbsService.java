@@ -30,8 +30,8 @@ public class BbsService {
 		return mapper.read(bno);
 	}
 
-	public List<BbsVO> list(String page) {
-		return mapper.list(page);
+	public List<BbsVO> list(Paging pm) {
+		return mapper.list(pm);
 	}
 	
 	public int allCount(){

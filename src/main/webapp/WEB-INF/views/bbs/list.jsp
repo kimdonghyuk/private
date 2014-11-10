@@ -15,47 +15,45 @@
 		<li>${list.bno}${list.title}${list.userid}${list.vcount}</li>
 	</c:forEach>
 
-	<%-- 	<c:forEach begin="${paging.first }" end="${paging.last }" var="idx">
-		<a href="javascript:_goPage(${idx})">[${idx}]</a>
-	</c:forEach> --%>
-	
 	
 	<!-- Before Page Button  -->
  	<c:choose>
-		<c:when test = "${pagePrev == 0}">
-		...</c:when>
-		<c:when test = "${pagePrev > 0 }">
-			<a href="javascript:_goPage(${pagePrev})"> [Prev] </a>
+		<c:when test = "${paging.getStartPage()-1 == 0}">
+		</c:when>
+		<c:when test = "${paging.getStartPage() > 0 }">
+			<a href="javascript:_goPage(${paging.getStartPage()}-10)"> [Prev] </a>
 		</c:when>
 	</c:choose>
 	
-	<!-- Page List -->
-	&nbsp; &nbsp;<c:forEach items="${pageList}" var="index">
+    <!-- Page List -->
+	&nbsp; &nbsp;<c:forEach begin="${paging.getStartPage()}" end="${paging.getEndPage()}" var="index">
 		<c:if test="${index < cnt}">
 			<a href="javascript:_goPage(${index})">[${index}]</a>
 		</c:if>
 	</c:forEach>
 	
 	<!-- Next Page Button -->
-	<a href="javascript:_goNextLine(${pageNext}+1)"> [Next] </a>
+	<c:choose>
+		<c:when test = "${paging.getLast() < cnt}">
+			<a href="javascript:_goPage(${paging.getEndPage()}+1)"> [Next] </a>
+		</c:when>
+	</c:choose>
 	
 	<!-- write context -->
 	<button type="button"><a href="cboard"> write </a></button>
 	
 	<br>
 	<br>
+ 	${paging}
+ 	<br>
+ 	${paging.getStartPage()}
 	<br>
-	${paging}
-	
-	<form method='get' name='pageForm'>
+
+ 	
+<form method='get' name='pageForm'>
 		<input type='hidden' name='page'>
 		<script>
       function _goPage(num){
-         document.pageForm.page.value = num;
-         document.pageForm.submit();
-      }
-      
-      function _goNextLine(num,first,last){
          document.pageForm.page.value = num;
          document.pageForm.submit();
       }

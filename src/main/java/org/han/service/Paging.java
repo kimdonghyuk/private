@@ -2,6 +2,7 @@ package org.han.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,14 @@ public class Paging {
 	private int cnt;		// 현재 페이지 구성하는데 필요한 데이터 수
 	private int lineCount;	// 화면 당 페이지 개수?
 	private int perPage;	// 페이지당 글 갯수
+	private int startPage;  // 화면 페이지 첫번째
+	private int endPage;    // 화면 페이지 마지막
 	private int first;		// page에 첫번째 게시글 
 	private int last;		// page에 마지막 게시글
-	
-//	private boolean hasNext = false;
-//	private boolean hasBefore = false;
+	private List<Integer> lineList;
+	private Map<String, String> crimap;
+	private Map<String, String> colMap;
+	private List<String> values;
 	
 	public static int getNumber(String str){
 		try{
@@ -48,24 +52,76 @@ public class Paging {
 		this.cnt = cnt;
 		this.lineCount = lineCount;
 		this.perPage = perPage;
-//		this.first = 1;
-//		this.last = 10;
+		this.first = 1;
+		this.last = 10;
 	}
 
+	
+	
+	public int getStartPage() {
+		int result = (int)((Math.floor((page-1)/(double)lineCount)) * lineCount) + 1;
+		return result;
+	}
 
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
 
-	public int getFirst(String str) {
-		int num = getNumber(str);
-		return (int)((Math.floor(num/(double)lineCount) * lineCount))-9;
+	public int getEndPage() {
+		return (int)((Math.floor((page-1)/(double)lineCount) * lineCount) + 10);	
+	}
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+
+	public int getFirst() {
+		return first = (int)((Math.floor(page/(double)lineCount) * lineCount))-10;
+
 	}
 
 	public void setFirst(int first) {
 		this.first = first;
 	}
-	
-	public int getLast(String str){
-		int num = getNumber(str)-1;
-		return (int)((Math.floor(num/(double)lineCount) * lineCount) + 10);
+
+	public int getLast() {
+		return (int)((Math.floor(page/(double)lineCount) * lineCount) + 10);
+	}
+
+	public void setLast(int last) {
+		this.last = last;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public List<Integer> getLineList() {
+		return lineList;
+	}
+
+	public Map<String, String> getCrimap() {
+		return crimap;
+	}
+
+	public void setCrimap(Map<String, String> crimap) {
+		this.crimap = crimap;
+	}
+
+	public Map<String, String> getColMap() {
+		return colMap;
+	}
+
+	public void setColMap(Map<String, String> colMap) {
+		this.colMap = colMap;
+	}
+
+	public List<String> getValues() {
+		return values;
+	}
+
+	public void setValues(List<String> values) {
+		this.values = values;
 	}
 
 	public int getPage(String str) {
@@ -106,38 +162,49 @@ public class Paging {
 	 	
 	}
 	
-//	public int getRnFirst(){		
-//		return getRnLast() - perPage ;
-//	}
-//	
-//	
-//	public int getRnLast(){		
-//		return (page * perPage);
+//	public List<Integer> getlineList(){		
+//		List<Integer> lineList = new ArrayList<Integer>();
+//		
+//		for (int i = 1; i < 11 ; i++) {
+//			lineList.add((int)((Math.floor((page-1)/(double)lineCount)) * lineCount) + i);
+//		}
+//		return lineList;		
 //	}
 	
-	public List getlineList(String page){		
-		List<Integer> lineList = new ArrayList<Integer>();
-		int pageNum = getNumber(page)-1;
+	public String getSql(){
 		
-		for (int i = 1; i < 11 ; i++) {
-			lineList.add((int)((Math.floor(pageNum/(double)lineCount)) * lineCount) + i);
-		}
-		return lineList;		
+		
+		
+		
+		return "";
 	}
+	
+//	public void calPage(){
+//		first = (int)((Math.floor(page/(double)lineCount) * lineCount))-9;
+//		last = (int)((Math.floor(page/(double)lineCount) * lineCount) + 10);
+//		lineList = new ArrayList<Integer>();
+//		
+//		for (int i = 1; i < 11 ; i++) {
+//			lineList.add((int)((Math.floor((page-1)/(double)lineCount)) * lineCount) + i);
+//		}
+//	}
 
 
 	@Override
 	public String toString() {
 		return "Paging [page=" + page + ", cnt=" + cnt + ", lineCount="
 				+ lineCount + ", perPage=" + perPage + ", first=" + first
-				+ ", last=" + last + "]";
+				+ ", last=" + last + ", crimap=" + crimap + ", colMap="
+				+ colMap + ", values=" + values + "]";
 	}
 
-	public static void main(String[] args) {
-		Paging maker = new Paging();
-////		System.out.println(maker.getRowNum());
-//		System.out.println(maker.getFirst("147"));
-	}
 	
+	public static void main(String[] args) {
+		Paging pm = new Paging();
+		pm.setPage(10);
+		int a = pm.getFirst();
+		int b = pm.getStartPage();
+		System.out.println( "끝값 :" + a + "첫값 :" + b);
+	}
 	
 }

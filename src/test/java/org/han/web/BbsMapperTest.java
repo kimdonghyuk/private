@@ -1,10 +1,9 @@
 package org.han.web;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.han.service.BbsService;
+import org.han.service.Paging;
 import org.han.vo.BbsVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +20,7 @@ public class BbsMapperTest {
 	@Inject
 	BbsVO vo;
 
+
 	@Test
 	public void createTest() {
 		vo.setTitle("title");
@@ -35,9 +35,15 @@ public class BbsMapperTest {
 	}
 	
 	@Test
-	public void pagingTest(){
-		List<BbsVO> list = service.list("2");
-		System.out.println(list);
+	public void listTest(){
+		Paging pm = new Paging();
+		System.out.println(service.list(pm));
 	}
+	
+//	@Test
+//	public void pagingTest(){
+//		List<BbsVO> list = service.list("2");
+//		System.out.println(list);
+//	}
 
 }

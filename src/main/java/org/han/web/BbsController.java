@@ -40,18 +40,18 @@ public class BbsController {
 	
 
 	@RequestMapping("/list")
-	public String list(
-			@RequestParam(value = "page", defaultValue = "1") String page,
+	public void list(
+			@ModelAttribute Paging pm,
 			Model model) {
 		
 		model.addAttribute("cnt", service.allCount());
-		model.addAttribute("list", service.list(page));
-		model.addAttribute("pagePrev",paging.getFirst(page));
-		model.addAttribute("pageList",paging.getlineList(page));
-		model.addAttribute("pageNext",paging.getLast(page));
-		model.addAttribute("paging", paging);
+		model.addAttribute("list", service.list(pm));
+//		model.addAttribute("pagePrev",paging.getFirst(page));
+//		model.addAttribute("pageList",paging.getlineList(page));
+//		model.addAttribute("pageNext",paging.getLast(page));
+		model.addAttribute("paging", pm);
 
-		return "bbs/list";
+//		return "bbs/list";
 
 	}
 
