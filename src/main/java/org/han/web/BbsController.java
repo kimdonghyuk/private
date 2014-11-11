@@ -40,18 +40,13 @@ public class BbsController {
 	
 
 	@RequestMapping("/list")
-	public void list(
-			@ModelAttribute Paging pm,
-			Model model) {
+	public void list(@RequestParam(value="types", defaultValue="") String[] types, 
+			@ModelAttribute Paging pm, Model model) {
 		
+		pm.setTypeArr(types);
 		model.addAttribute("cnt", service.allCount());
 		model.addAttribute("list", service.list(pm));
-//		model.addAttribute("pagePrev",paging.getFirst(page));
-//		model.addAttribute("pageList",paging.getlineList(page));
-//		model.addAttribute("pageNext",paging.getLast(page));
 		model.addAttribute("paging", pm);
-
-//		return "bbs/list";
 
 	}
 

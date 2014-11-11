@@ -1,6 +1,9 @@
 package org.han.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -8,58 +11,54 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Paging {
-	
-	private int page;		// 보여주려고 하는 page의 숫자
-	private int cnt;		// 현재 페이지 구성하는데 필요한 데이터 수
-	private int lineCount;	// 화면 당 페이지 개수?
-	private int perPage;	// 페이지당 글 갯수
-	private int startPage;  // 화면 페이지 첫번째
-	private int endPage;    // 화면 페이지 마지막
-	private int first;		// page에 첫번째 게시글 
-	private int last;		// page에 마지막 게시글
-	private List<Integer> lineList;
-	private Map<String, String> crimap;
+
+	private int page; // 보여주려고 하는 page의 숫자
+	private int cnt; // 현재 페이지 구성하는데 필요한 데이터 수
+	private int lineCount; // 화면 당 페이지 개수?
+	private int perPage; // 페이지당 글 갯수
+	private int startPage; // 화면 페이지 첫번째
+	private int endPage; // 화면 페이지 마지막
+
+	private String keyword; // 검색 keyword를 담아 항목 분류를 하기 위한 변수
+	private String[] typeArr; // jsp의 hidden으로부터 검색어의 유무를 확인하기 위해 선언
+	private Map<String, String> criMap;
 	private Map<String, String> colMap;
 	private List<String> values;
-	
-	public static int getNumber(String str){
-		try{
+
+	public static int getNumber(String str) {
+		try {
 			return Integer.parseInt(str);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return 1;
 		}
 	}
-	
-	public Paging(){
+
+	public Paging() {
 		this(1);
 	}
-	
-	public Paging(int page){
+
+	public Paging(int page) {
 		this(page, 0);
 	}
-	
-	public Paging(String pageStr){
-		this(getNumber(pageStr),0);
+
+	public Paging(String pageStr) {
+		this(getNumber(pageStr), 0);
 	}
-	
+
 	public Paging(int page, int cnt) {
-		this(page, cnt, 10,10);
+		this(page, cnt, 10, 10);
 	}
-	
+
 	public Paging(int page, int cnt, int lineCount, int perPage) {
 		super();
 		this.page = page;
 		this.cnt = cnt;
 		this.lineCount = lineCount;
 		this.perPage = perPage;
-		this.first = 1;
-		this.last = 10;
 	}
 
-	
-	
 	public int getStartPage() {
-		int result = (int)((Math.floor((page-1)/(double)lineCount)) * lineCount) + 1;
+		int result = (int) ((Math.floor((page - 1) / (double) lineCount)) * lineCount) + 1;
 		return result;
 	}
 
@@ -68,44 +67,31 @@ public class Paging {
 	}
 
 	public int getEndPage() {
-		return (int)((Math.floor((page-1)/(double)lineCount) * lineCount) + 10);	
+		return (int) ((Math.floor((page - 1) / (double) lineCount) * lineCount) + 10);
 	}
 
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
 
-	public int getFirst() {
-		return first = (int)((Math.floor(page/(double)lineCount) * lineCount))-10;
-
+	public String getKeyword() {
+		return keyword;
 	}
 
-	public void setFirst(int first) {
-		this.first = first;
-	}
-
-	public int getLast() {
-		return (int)((Math.floor(page/(double)lineCount) * lineCount) + 10);
-	}
-
-	public void setLast(int last) {
-		this.last = last;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	public int getPage() {
 		return page;
 	}
 
-	public List<Integer> getLineList() {
-		return lineList;
+	public Map<String, String> getCriMap() {
+		return criMap;
 	}
 
-	public Map<String, String> getCrimap() {
-		return crimap;
-	}
-
-	public void setCrimap(Map<String, String> crimap) {
-		this.crimap = crimap;
+	public void setCriMap(Map<String, String> criMap) {
+		this.criMap = criMap;
 	}
 
 	public Map<String, String> getColMap() {
@@ -155,56 +141,87 @@ public class Paging {
 	public void setPerPage(int perPage) {
 		this.perPage = perPage;
 	}
-	
-	public int getRowNum(){
-		
-		return (  ( (int)(Math.ceil(page/(double)perPage)) ) * (perPage * lineCount))  +1;
-	 	
+
+	public int getRowNum() {
+
+		return (((int) (Math.ceil(page / (double) perPage))) * (perPage * lineCount)) + 1;
+
 	}
-	
-//	public List<Integer> getlineList(){		
-//		List<Integer> lineList = new ArrayList<Integer>();
-//		
-//		for (int i = 1; i < 11 ; i++) {
-//			lineList.add((int)((Math.floor((page-1)/(double)lineCount)) * lineCount) + i);
-//		}
-//		return lineList;		
-//	}
-	
-	public String getSql(){
-		
-		
-		
-		
+
+	public String[] getTypeArr() {
+		return typeArr;
+	}
+
+	public void setTypeArr(String[] typeArr) {
+		this.typeArr = typeArr;
+	}
+
+	// jsp파일의 hidden으로 정해진 type이라는 이름들을 통해서 검색어가 없으면 일반 리스트를 출력하는 메소드
+	public String checked(String type) {
+		if (typeArr == null || typeArr.length == 0) {
+			return "";
+		}
+		for (int i = 0; i < typeArr.length; i++) {
+
+			if (typeArr[i].equals(type)) {
+				return "checked";
+			}
+		}
 		return "";
 	}
-	
-//	public void calPage(){
-//		first = (int)((Math.floor(page/(double)lineCount) * lineCount))-9;
-//		last = (int)((Math.floor(page/(double)lineCount) * lineCount) + 10);
-//		lineList = new ArrayList<Integer>();
-//		
-//		for (int i = 1; i < 11 ; i++) {
-//			lineList.add((int)((Math.floor((page-1)/(double)lineCount)) * lineCount) + i);
-//		}
-//	}
 
+	// xml파일의 Sql EL문이 호출하는 메소드
+	// where title like '%별%' or userid like '%han%' or cont like '%hi%'
+	public String getSql() {
+		if(keyword == null || keyword.length() == 0 || typeArr == null){
+			return "";}
+		// keyword 값이 없거나 keyword가 공백이거나 type이 선택된 것이 없으면 공백을 반환 (쿼리문에 영향x)
+		
+		criMap = new HashMap<String,String>();
+		colMap = new HashMap<String,String>();
+		
+		colMap.put("t","title");
+		colMap.put("w","userid");
+		colMap.put("c","cont");
+		
+		for(String type : typeArr){
+			criMap.put(type, keyword);
+		}
+		
+		StringBuilder builder = new StringBuilder(" where ");
+		// 검색의 query문 조건의 시작 where를 달아둠.
+		
+		Iterator<String> iter = criMap.keySet().iterator();
+		// Iterator를 통해서 cripMap에 key값들을 setting함.
+		values = new ArrayList<String>();
+	
+		
+		for (int i = 0; i < criMap.size(); i++) {
+			this.values.add("dummy");
+			// 들어간 type의 key개수만큼 dummy date를 add해줌.
+		}
+
+		while(iter.hasNext()){
+
+			String key = iter.next();
+			values.add(criMap.get(key));
+
+			builder.append(colMap.get(key) + " like '%'||#{key}||'%' or ");
+			}
+		return builder.substring(0, builder.length()-4);
+	}
+	
+	public String getKey() {
+		return values.remove(0);
+	}
 
 	@Override
 	public String toString() {
 		return "Paging [page=" + page + ", cnt=" + cnt + ", lineCount="
-				+ lineCount + ", perPage=" + perPage + ", first=" + first
-				+ ", last=" + last + ", crimap=" + crimap + ", colMap="
-				+ colMap + ", values=" + values + "]";
+				+ lineCount + ", perPage=" + perPage + ", startPage="
+				+ startPage + ", endPage=" + endPage + ", keyword=" + keyword
+				+ ", typeArr=" + Arrays.toString(typeArr) + ", criMap="
+				+ criMap + ", colMap=" + colMap + ", values=" + values + "]";
 	}
 
-	
-	public static void main(String[] args) {
-		Paging pm = new Paging();
-		pm.setPage(10);
-		int a = pm.getFirst();
-		int b = pm.getStartPage();
-		System.out.println( "끝값 :" + a + "첫값 :" + b);
-	}
-	
 }
