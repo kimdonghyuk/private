@@ -9,10 +9,13 @@
 </head>
 <body>
 
-	<h3>list page입니다.</h3>
+	<h3>list page입니다. 	
+	<!-- write context -->
+	<button type="button"><a href="cboard"> 새 글쓰기 </a></button> </h3>
 
 	<c:forEach items="${list}" var="list">
-		<li>${list.bno}${list.title}${list.userid}${list.vcount}</li>
+		<li> [글번호 : ${list.bno}] <a href="read?bno=${list.bno}"> [글제목 : ${list.title}]</a> 
+		[글쓴이 : ${list.userid}] [조회수 : ${list.vcount}] </li>
 	</c:forEach>
 
 	
@@ -37,13 +40,11 @@
 		<c:when test = "${paging.endPage < cnt}">
 			<a href="javascript:_goPage(${paging.endPage}+1)"> [Next] </a>
 		</c:when>
-	</c:choose>
-	
-	<!-- write context -->
-	<button type="button"><a href="cboard"> write </a></button>
+	</c:choose><br>
+
 
  	
-<form method='get' name='pageForm'>
+<form method='get' accept-charset="utf-8" name='pageForm'>
 		<input type='hidden' name='bno'>
 		<input type='hidden' name='page' value='${paging.page}'>
 		<input type='text' name='keyword' value='${paging.keyword }'>
@@ -52,6 +53,7 @@
 		<input type='checkbox' name='types' value="c" ${paging.checked("c") }>내용
 		<button onclick="javascript:_goPage(1);">Search</button>
 </form>		
+
 
 
 	<br>

@@ -31,7 +31,7 @@ public class BbsMapperTest {
 	
 	@Test
 	public void readTest(){
-		System.out.println(service.read("452"));
+		System.out.println(service.read(452));
 	}
 	
 	@Test
@@ -39,6 +39,16 @@ public class BbsMapperTest {
 		Paging pm = new Paging();
 		System.out.println(service.list(pm));
 	}
+	
+	@Test
+	public void updateTest(){
+		vo.setTitle("명진이형님의 별명을 달아주세요");
+		vo.setCont("우리 멍진이 형님의 별명을 많이 많이 달아주세요~");
+		vo.setBno(522);
+		service.update(vo);
+		System.out.println(service.read(522));
+	}
+	
 	
 //	@Test
 //	public void pagingTest(){

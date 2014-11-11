@@ -18,21 +18,26 @@ public class BbsService {
 		mapper.create(vo);
 	}
 
+	
 	public void update(BbsVO vo){
 		mapper.update(vo);
 	}
 	
-	public void delete(String bno){
+	
+	public void delete(int bno){
 		mapper.delete(bno);
 	}
 	
-	public BbsVO read(String bno) {
+	
+	public BbsVO read(int bno) {
 		return mapper.read(bno);
 	}
 
+	
 	public List<BbsVO> list(Paging pm) {
 		return mapper.list(pm);
 	}
+	
 	
 	public int allCount(){
 		int cnt = Integer.parseInt(mapper.allCount());

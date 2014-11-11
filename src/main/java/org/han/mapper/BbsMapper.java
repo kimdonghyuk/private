@@ -19,13 +19,13 @@ public interface BbsMapper {
 	// paramter¿”.
 
 	@Select("select * from tbl_bbs where bno=#{bno}")
-	public BbsVO read(String bno);
+	public BbsVO read(int bno);
 
-	@Update("update tbl_bbs set title=#{title} where bno=#{bno}")
+	@Update("update tbl_bbs set title=#{title}, cont=#{cont} where bno=#{bno}")
 	public void update(BbsVO vo);
 	
 	@Delete("delete from tbl_bbs where bno=#{bno}")
-	public void delete(String bno);
+	public void delete(int bno);
 
 //	@Select("select bno,"
 //			+ " (case when sysdate - regdate < 1 then '\"new\"' end)||title||(case when rcount = 0 then ' ' when rcount>0 then '['||rcount||']' end) title,"
