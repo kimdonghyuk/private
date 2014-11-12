@@ -67,7 +67,7 @@ public class Paging {
 	}
 
 	public int getEndPage() {
-		return (int) ((Math.floor((page - 1) / (double) lineCount) * lineCount) + 10);
+		return (int)((Math.floor((page - 1) / (double) lineCount) * lineCount) + 10);
 	}
 
 	public void setEndPage(int endPage) {
